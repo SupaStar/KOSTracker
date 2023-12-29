@@ -61,6 +61,12 @@ async function ejecucion() {
             lipsticksAvaliable.push(product);
         }
     });
+    const db = client.db("Info");
+    const collection = db.collection(`log-dia-${day}-${month}-${year}`);
+    row = {
+        data: "El bot se ejecutó correctamente a las " + obtenerFechaHora() + " horas",
+    }
+    await collection.insertOne(row);
     try {
         if (lipsticksAvaliable.length > 0) {
             botMessage = "Hay existencia de los siguientes productos: \n";
@@ -70,12 +76,6 @@ async function ejecucion() {
             await enviarMensajes();
         }
         await browser.close();
-        const db = client.db("Info");
-        const collection = db.collection(`log-dia-${day}-${month}-${year}`);
-        row = {
-            data: "El bot se ejecutó correctamente a las " + obtenerFechaHora() + " horas",
-        }
-        await collection.insertOne(row);
     } catch (error) {
         console.log(error);
     }
