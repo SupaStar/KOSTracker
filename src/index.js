@@ -29,6 +29,7 @@ agenda.define("comprobarExistencias", async (job) => {
 // ejecucion();
 
 async function ejecucion() {
+    console.log("Ejecutando comprobacion de existencias");
     const browser = await puppeteer.launch({ args: ['--no-sandbox'], headless: true });
     const page = await browser.newPage();
     page.goto('https://www.kosbeauty.mx/tienda/?v=12fd81cd143d');
@@ -54,7 +55,7 @@ async function ejecucion() {
 
         return products;
     });
-
+    console.log(productAvailability);
     var lipsticksAvaliable = [];
     productAvailability.forEach((product) => {
         if (product.name.includes('LIPSTICK') && product.isOutOfStock == false) {
