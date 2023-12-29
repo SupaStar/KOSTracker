@@ -15,17 +15,17 @@ const bot = new TelegramBot(tokenTelegram, { polling: false }); // Configura el 
 const delay = (milliseconds) => new Promise((resolve) => setTimeout(resolve, milliseconds));
 
 var botMessage = "";
-// agenda.define("comprobarExistencias", async (job) => {
-//     ejecucion();
-// });
+agenda.define("comprobarExistencias", async (job) => {
+    ejecucion();
+});
 
-// (async function () {
-//     await agenda.start();
-//     console.log("Bot iniciado con exito");
-//     await agenda.every("60 minutes", "comprobarExistencias");
-// })();
+(async function () {
+    await agenda.start();
+    console.log("Bot iniciado con exito");
+    await agenda.every("60 minutes", "comprobarExistencias");
+})();
 
-ejecucion();
+// ejecucion();
 
 async function ejecucion() {
     const browser = await puppeteer.launch({ args: ['--no-sandbox'], headless: true });
