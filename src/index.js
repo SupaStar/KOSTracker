@@ -4,6 +4,7 @@ const puppeteer = require('puppeteer');
 const Agenda = require('agenda');
 const TelegramBot = require('node-telegram-bot-api');
 const axios = require('axios');
+const moment = require('moment-timezone');
 
 const mongoConexion = config.mongoConexion;
 const tokenTelegram = config.tokenTelegram;
@@ -69,7 +70,12 @@ async function ejecucion() {
             await enviarMensajes();
         }
         await browser.close();
-
+        const db = client.db("Info");
+        const collection = db.collection(`log-dia-${day}-${month}-${year}`);
+        row = {
+            data: "El bot se ejecutó correctamente a las " + obtenerFechaHora() + " horas",
+        }
+        await collection.insertOne(row);
     } catch (error) {
         console.log(error);
     }
@@ -87,4 +93,16 @@ async function enviarMensajes() {
             console.error('Error al enviar el mensaje a Telegram:', error.message);
           }
     });
+}
+function obtenerFechaHora() {
+    const now = moment().tz('America/Mexico_City');
+    const day = now.format('DD');
+    const month = now.format('MM');
+    const year = now.format('YYYY');
+    const hours = now.format('HH');
+    const minutes = now.format('mm');
+    const seconds = now.format('ss');
+
+    const formattedDate = `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
+    return formattedDate;
 }
